@@ -55,6 +55,11 @@
   <ItemGroup>
     <Compile Include="Activity1.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="IParticleSystem.cs" />
+    <Compile Include="Metrics.cs" />
+    <Compile Include="Particle.cs" />
+    <Compile Include="StarBurstParticles.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

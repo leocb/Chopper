@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Chopper.Particles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
+using System.Collections.Generic;
 
 namespace Chopper
 {
@@ -8,26 +11,25 @@ namespace Chopper
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private StarBurstParticles _particleSystem;
+        private SpriteFont _font;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+            _font = Content.Load<SpriteFont>("Fonts/BaksoSapi");
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            _particleSystem = new StarBurstParticles(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -35,16 +37,23 @@ namespace Chopper
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            var touch = TouchPanel.GetState();
+            if (touch.Count > 0)
+            {
+                _particleSystem.Emmit(touch[0].Position, null);
+            }
+
+            _particleSystem.Update();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
+            _particleSystem.Draw(ref _spriteBatch);
+            Metrics.Draw(ref gameTime, ref _font, ref _spriteBatch);
 
             base.Draw(gameTime);
         }
